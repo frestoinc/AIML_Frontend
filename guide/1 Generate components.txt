@@ -1,0 +1,5 @@
+//To generate pages
+ng generate component pages/<page-name>
+
+//To generate pages for partial use (template)
+ng generate component components/<page-name>

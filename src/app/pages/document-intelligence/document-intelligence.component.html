@@ -1,0 +1,20 @@
+<div class="m-3 card border-primary mb-3" style="max-width: 20rem;">
+  <div class="card-body text-primary">
+    <form (submit)="onFileSubmit($event)">
+      <div class="mb-3">
+        <label for="file" class="form-label">Choose File</label>
+        <input type="file" id="file" class="form-control" (change)="onFileSelected($event)" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Extract Text</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Pop-up for messages -->
+<pop-up-box [title]="modalTitle" [body]="modalBody"></pop-up-box>
+<spinner></spinner>
+
+<div *ngIf="uploadResponse" class="m-3 json-output">
+  <pre #jsonText>{{ uploadResponse | json }}</pre>
+  <button (click)="copyToClipboard()">Copy</button>
+</div>

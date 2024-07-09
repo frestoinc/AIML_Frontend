@@ -1,0 +1,24 @@
+/* spinner.component.css or the respective CSS file for the component */
+.json-output pre {
+    background-color: #f4f4f4; /* Light grey background */
+    border: 1px solid #ccc; /* Grey border */
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto; /* Adds horizontal scrolling if content is too wide */
+  }
+  
+  /* your.component.css */
+.json-output button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .json-output button:hover {
+    background-color: #0056b3;
+  }
+  

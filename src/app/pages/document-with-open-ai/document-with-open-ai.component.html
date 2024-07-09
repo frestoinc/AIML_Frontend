@@ -1,0 +1,118 @@
+<div class="container-fluid">
+    <div class="row">
+        <!-- Form Column -->
+        <div class="col-md-6">
+            <div class="m-3 card border-primary mb-3">
+                <div class="card-body text-primary">
+                    <form (submit)="onFileSubmit($event)">
+                        <div class="mb-3">
+                            <!-- Dropdown list for GPT Option -->
+                            <label for="dropdown" class="form-label">Select Model:</label>
+                            <select id="dropdown" class="form-select" [(ngModel)]="deploymentName" name="deploymentName" (change)="selectedOption($event)">
+                                <option value="gpt35">GPT-3.5</option>
+                                <option value="gpt4">GPT-4</option>
+                                <option value="gpt4-v">GPT-4 Vision</option>
+                            </select>
+
+                            <!-- Text Area for Prompt -->
+                            <label for="prompt" class="form-label">Enter Prompt</label>
+                            <textarea id="prompt" name="prompt" class="form-control" [(ngModel)]="prompt" rows="3"></textarea>
+
+                            <!-- Upload button for Documents -->
+                            <label for="file" class="form-label">Choose File
+                                <span *ngIf="selectedFile" class="remove-file" (click)="removeFile(fileInput)">✕</span>
+                            </label>
+                            <input type="file" id="file" class="form-control" (change)="onFileSelected($event)" #fileInput required>
+
+                            <!-- Checkbox for Document Intelligence API -->
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" id="documentIntelligence" [(ngModel)]="useDocumentIntelligence" name="useDocumentIntelligence"
+                                [checked]="useDocumentIntelligence" (change)="selectUseDocumentIntelligence($event)">
+                                <label class="form-check-label c" for="documentIntelligence" style="color: red;">
+                                    Use Document Intelligence API to Extract Data (Only works on pdf and images)
+                                </label>
+                            </div>
+                            
+                            <!-- Checkbox for OpenAI Additional-Self-Check -->
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" id="additionalselfcheck" [(ngModel)]="useAdditionalSelfCheck" name="useAdditionalSelfCheck"
+                                [checked]="useAdditionalSelfCheck" (change)="selectUseAdditionalSelfCheck($event)">
+                                <label class="form-check-label c" for="additionalselfcheck" style="color: black;">
+                                    Use Additional-Self-Check (Only works on larger pdf documents that may exceed the model token limit, has a higher token cost)
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary me-2">Extract Text</button>
+                        <button type="reset" class="btn btn-danger">Reset Form</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation Column -->
+        <div class="col-md-6 d-flex align-items-center">
+            <div class="m-3">
+                <h4>Documentation</h4>
+
+                <!-- Model GPT-3.5 and GPT-4 Section -->
+                <div>
+                    <strong>Model GPT-3.5 and GPT-4</strong>
+                    <ul>
+                        <li>Mandatory to use Document Intelligence as GPT-3.5 and GPT-4 has no ability to read pdf or images</li>
+                    </ul>
+                </div>
+
+                <!-- Model GPT-4 Vision Section -->
+                <div>
+                    <strong>Model GPT-4 Vision</strong>
+                    <ul>
+                        <li>Can read pdf and images</li>
+                        <li>Document Intelligence is optional</li>
+                        <ul>
+                            <li><b>If checked,</b>
+                                <ol>
+                                    <li>your pdf/jpeg/png will be read with Azure Document Intelligence</li>
+                                    <li>the text respone from Document Intelligence will then be sent to OpenAI with your prompt</li>
+                                </ol>
+                            </li>
+                            <li><b>If not checked and a pdf is uploaded,</b>
+                                <ol>
+                                    <li>your pdf will be converted to an image</li>
+                                    <li>the image will then be sent to OpenAI with your prompt</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <b>If not checked and an image is uploaded,</b>
+                                <ol>
+                                    <li>the image will be sent to OpenAI with your prompt</li>
+                                </ol>
+                            </li>
+                        </ul>                        
+                    </ul>
+                </div>
+
+                <!-- Milliseconds to Seconds Calculations -->
+                <div>
+                    <strong>Milliseconds to Seconds</strong>
+                    <ul>
+                        <li>1 second = 1,000 milliseconds</li>
+                        <li>1 minute = 60,000 milliseconds</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="messages.length > 0" class="m-3 string-output" #chatContainer>
+        <div *ngFor="let message of messages; let i = index" class="chat-message" [ngClass]="{'user-message': message.type === 'user', 'gpt-message': message.type === 'gpt'}">
+            <button class="mini-copy-button" (click)="copyMessageToClipboard(i)">Copy</button>
+            <!-- Using [innerHTML]="message.content" instead of {{ message.content }} for HTML interpolation-->            
+            <pre [innerHTML]="message.content"></pre>
+        </div>
+        <button class="btn btn-primary me-2" (click)="copyToClipboard()">Copy Chat</button>
+        <button class="btn btn-danger" (click)="clearChat()">Clear Chat</button>        
+    </div>
+    
+</div>
+
+<pop-up-box [title]="modalTitle" [body]="modalBody"></pop-up-box>
+<spinner></spinner>

@@ -1,0 +1,8 @@
+1. If doesn't work, install NodeJS NPM
+2. npm install -g @angular/cli@latest
+3. Try launching again
+4. If still doesn't work, ensure that its installation directory is included in system's PATH environment variable
+4a. npm list -g @angular/cli
+4b. Copy the path (default should be sth like C:\Users\{YourUsername}\AppData\Roaming\npm)
+4c. Go to Environment Variables window, find the "Path" variable in the "System variables" 
+5. Relaunch
