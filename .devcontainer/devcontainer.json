@@ -1,0 +1,22 @@
+{
+	"name": "AIML-Frontend",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+	"features": {
+		"ghcr.io/devcontainers-extra/features/angular-cli:2": {},
+		"ghcr.io/devcontainers-extra/features/typescript:2": {}
+	},
+
+	//"forwardPorts": [8000],
+
+	"postCreateCommand": "echo \"Initialized\"",
+    "postAttachCommand": "npm install && ng serve --port 8000",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint"
+			]
+		}
+	},
+
+	//"remoteUser": "vscode"
+}

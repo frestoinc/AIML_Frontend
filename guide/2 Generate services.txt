@@ -1,2 +1,0 @@
-//For logic and algorithm
-ng generate service services/<service-name>
